@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { primaryConcern, type CheckinSubmission } from "@/lib/checkin";
 import { ReviewActions } from "./review-actions";
@@ -22,8 +21,7 @@ export default async function AdminPage({
     redirect("/login?next=/admin");
   }
 
-  const supabase = createAdminClient();
-  let query = supabase.from("checkin_submissions").select("*").order("created_at", { ascending: false });
+  let query = authClient.from("checkin_submissions").select("*").order("created_at", { ascending: false });
   if (params.wants === "yes") query = query.eq("wants_session", true);
   const { data, error } = await query;
   const submissions = (data || []) as CheckinSubmission[];

@@ -46,11 +46,25 @@ create table if not exists audit_logs (
 alter table audit_logs enable row level security;
 
 drop policy if exists "authenticated_can_read_audit_logs" on audit_logs;
+drop policy if exists "anon_can_insert_audit_logs" on audit_logs;
+drop policy if exists "authenticated_can_insert_audit_logs" on audit_logs;
 create policy "authenticated_can_read_audit_logs"
 on audit_logs
 for select
 to authenticated
 using (true);
+
+create policy "anon_can_insert_audit_logs"
+on audit_logs
+for insert
+to anon
+with check (true);
+
+create policy "authenticated_can_insert_audit_logs"
+on audit_logs
+for insert
+to authenticated
+with check (true);
 
 insert into checkin_submissions
   (id, name, age_range, whatsapp, concerns, duration, already_tried, wants_session, summary_text, summary_source, summary_review_status, readiness_score)

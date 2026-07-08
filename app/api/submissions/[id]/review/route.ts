@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(_request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
-    const supabase = createAdminClient();
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ message: "Please sign in" }, { status: 401 });
+    }
 
     const { data: before } = await supabase.from("checkin_submissions").select("*").eq("id", id).single();
     const { data: after, error } = await supabase

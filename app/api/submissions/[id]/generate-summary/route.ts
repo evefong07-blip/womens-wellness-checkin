@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { generateSummary } from "@/lib/summary-ai";
 import type { CheckinPayload } from "@/lib/checkin";
 
 export async function POST(_request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
-    const supabase = createAdminClient();
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ message: "Please sign in" }, { status: 401 });
+    }
 
     const { data: before, error: fetchError } = await supabase
       .from("checkin_submissions")

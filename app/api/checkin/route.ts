@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { generateSummary } from "@/lib/summary-ai";
 import { normalizeWhatsapp, validateCheckinPayload, type CheckinPayload } from "@/lib/checkin";
 
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ errors }, { status: 400 });
     }
 
-    const supabase = createAdminClient();
+    const supabase = await createClient();
     const summary = await generateSummary(payload);
 
     const { data, error } = await supabase
