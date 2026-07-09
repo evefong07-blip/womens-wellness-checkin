@@ -23,19 +23,21 @@ export async function POST(request: Request) {
 
     const supabase = await createClient();
     const summary = await generateSummary(payload);
+    const now = new Date().toISOString();
+    const submission = {
+      id: crypto.randomUUID(),
+      created_at: now,
+      ...payload,
+      summary_text: summary.summary_text,
+      summary_source: summary.summary_source,
+      summary_confidence: summary.summary_confidence,
+      summary_review_status: "unreviewed",
+      readiness_score: summary.readiness_score,
+    };
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("checkin_submissions")
-      .insert({
-        ...payload,
-        summary_text: summary.summary_text,
-        summary_source: summary.summary_source,
-        summary_confidence: summary.summary_confidence,
-        summary_review_status: "unreviewed",
-        readiness_score: summary.readiness_score,
-      })
-      .select()
-      .single();
+      .insert(submission);
 
     if (error) {
       return NextResponse.json({ message: "Something went wrong. Please try again." }, { status: 500 });
@@ -43,13 +45,13 @@ export async function POST(request: Request) {
 
     await supabase.from("audit_logs").insert({
       action: "submission_created",
-      submission_id: data.id,
+      submission_id: submission.id,
       actor: "system",
       before_state: null,
-      after_state: data,
+      after_state: submission,
     });
 
-    return NextResponse.json({ submission: data });
+    return NextResponse.json({ submission });
   } catch {
     return NextResponse.json({ message: "Something went wrong. Please try again." }, { status: 500 });
   }
