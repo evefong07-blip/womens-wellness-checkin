@@ -125,7 +125,6 @@ export default function Home() {
                   <span className="mt-1 block font-semibold text-stone-900">{submission.concerns.length}</span>
                 </div>
               </div>
-              <p className="mt-3 text-sm text-stone-700">{submission.concerns.join(", ")}</p>
             </div>
 
             <a
@@ -136,9 +135,6 @@ export default function Home() {
             >
               Continue to WhatsApp to contact Evelyn
             </a>
-            <p className="mt-2 text-center text-sm text-stone-600">
-              This opens WhatsApp with a message already written. You can review it before sending.
-            </p>
             <button
               className="mt-3 min-h-12 w-full rounded-md border border-stone-300 px-5 py-3 text-sm font-medium text-stone-700"
               onClick={() => {
