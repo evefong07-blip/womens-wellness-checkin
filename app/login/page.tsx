@@ -25,8 +25,8 @@ export default async function LoginPage({
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-rose-50 px-4 py-8 text-stone-900">
-      <form action={login} className="w-full max-w-sm rounded-lg bg-white p-6 shadow-sm ring-1 ring-rose-100">
+    <main className="flex min-h-screen items-center justify-center overflow-x-hidden bg-rose-50 px-4 py-6 text-stone-900">
+      <form action={login} className="w-full max-w-sm rounded-lg bg-white p-5 shadow-sm ring-1 ring-rose-100 sm:p-6">
         <p className="text-sm font-medium text-rose-700">Evelyn admin</p>
         <h1 className="mt-2 text-2xl font-semibold">Sign in</h1>
         <input name="next" type="hidden" value={params.next || "/admin"} />

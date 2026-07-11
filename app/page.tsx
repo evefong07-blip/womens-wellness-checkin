@@ -102,11 +102,11 @@ export default function Home() {
 
   if (submission) {
     return (
-      <main className="min-h-screen bg-rose-50 px-4 py-6 text-stone-900">
-        <section className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-2xl flex-col justify-center">
-          <div className="rounded-lg bg-white p-6 shadow-sm ring-1 ring-rose-100">
+      <main className="min-h-screen overflow-x-hidden bg-rose-50 px-4 py-5 text-stone-900 sm:py-8">
+        <section className="mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-2xl flex-col justify-center">
+          <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-rose-100 sm:p-6">
             <p className="text-sm font-medium text-rose-700">Your wellness check-in is saved</p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight">Thank you, {submission.name}.</h1>
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Thank you, {submission.name}.</h1>
             <p className="mt-4 text-base leading-7 text-stone-700">{submission.summary_text}</p>
 
             <div className="mt-6 rounded-lg bg-rose-50 p-4">
@@ -119,7 +119,7 @@ export default function Home() {
             </div>
 
             <a
-              className="mt-6 flex w-full items-center justify-center rounded-md bg-rose-700 px-5 py-3 text-center text-base font-semibold text-white transition hover:bg-rose-800"
+              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-md bg-rose-700 px-5 py-3 text-center text-base font-semibold text-white transition hover:bg-rose-800"
               href={buildWhatsappUrl(submission)}
               rel="noreferrer"
               target="_blank"
@@ -127,7 +127,7 @@ export default function Home() {
               Message Evelyn on WhatsApp
             </a>
             <button
-              className="mt-3 w-full rounded-md border border-stone-300 px-5 py-3 text-sm font-medium text-stone-700"
+              className="mt-3 min-h-12 w-full rounded-md border border-stone-300 px-5 py-3 text-sm font-medium text-stone-700"
               onClick={() => {
                 setSubmission(null);
                 setForm(initialForm);
@@ -144,23 +144,23 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-rose-50 px-4 py-6 text-stone-900">
-      <section className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-2xl flex-col justify-center">
+    <main className="min-h-screen overflow-x-hidden bg-rose-50 px-4 py-5 text-stone-900 sm:py-8">
+      <section className="mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-2xl flex-col justify-center">
         <div className="mb-5">
           <p className="text-sm font-medium text-rose-700">Women's Wellness Check-In</p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight">Tell Evelyn what has been happening.</h1>
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Tell Evelyn what has been happening.</h1>
           <p className="mt-3 text-base leading-7 text-stone-700">
             A gentle five-step check-in for women 40+ in Singapore. No login needed.
           </p>
         </div>
 
         <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-rose-100">
-          <div className="mb-5 flex items-center justify-between gap-4">
+          <div className="mb-5 flex items-start justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-rose-700">{progress}</p>
               <h2 className="mt-1 text-xl font-semibold">{stepTitle}</h2>
             </div>
-            <div className="h-2 w-28 rounded-full bg-rose-100">
+            <div className="mt-3 h-2 w-24 shrink-0 rounded-full bg-rose-100 sm:w-28">
               <div className="h-2 rounded-full bg-rose-600" style={{ width: `${(step / 5) * 100}%` }} />
             </div>
           </div>
@@ -271,7 +271,7 @@ export default function Home() {
 
           {apiError && <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{apiError}</p>}
 
-          <div className="mt-6 flex gap-3">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             {step > 1 && (
               <button className="secondary-button" onClick={() => setStep((current) => current - 1)} type="button">
                 Back

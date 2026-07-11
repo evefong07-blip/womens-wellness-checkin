@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { primaryConcern, type CheckinSubmission } from "@/lib/checkin";
 import { ReviewActions } from "./review-actions";
@@ -13,13 +12,6 @@ export default async function AdminPage({
 }) {
   const params = await searchParams;
   const authClient = await createClient();
-  const {
-    data: { user },
-  } = await authClient.auth.getUser();
-
-  if (!user) {
-    redirect("/login?next=/admin");
-  }
 
   let query = authClient.from("checkin_submissions").select("*").order("created_at", { ascending: false });
   if (params.wants === "yes") query = query.eq("wants_session", true);
@@ -28,14 +20,14 @@ export default async function AdminPage({
   const selected = submissions.find((item) => item.id === params.selected) || submissions[0] || null;
 
   return (
-    <main className="min-h-screen bg-stone-50 px-4 py-6 text-stone-900">
+    <main className="min-h-screen px-4 py-5 text-stone-900 sm:px-6 lg:px-8">
       <section className="mx-auto w-full max-w-6xl">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-medium text-rose-700">Evelyn admin</p>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight">Wellness check-ins</h1>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Wellness check-ins</h1>
           </div>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:flex">
             <Link className="secondary-button max-w-none" href="/admin">
               Show all
             </Link>
@@ -54,16 +46,16 @@ export default async function AdminPage({
           </div>
         ) : (
           <div className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-stone-200">
-              <div className="grid grid-cols-[1fr_1fr_0.8fr] gap-3 border-b border-stone-200 bg-stone-100 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-stone-600 sm:grid-cols-[1fr_1fr_0.8fr_0.8fr]">
+            <div className="hidden overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-stone-200 md:block">
+              <div className="grid grid-cols-[1fr_1fr_0.8fr_0.8fr] gap-3 border-b border-stone-200 bg-stone-100 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-stone-600">
                 <span>Name</span>
                 <span>Top concern</span>
                 <span>Session</span>
-                <span className="hidden sm:block">Date</span>
+                <span>Date</span>
               </div>
               {submissions.map((submission) => (
                 <Link
-                  className={`grid grid-cols-[1fr_1fr_0.8fr] gap-3 border-b border-stone-100 px-4 py-4 text-sm transition hover:bg-rose-50 sm:grid-cols-[1fr_1fr_0.8fr_0.8fr] ${
+                  className={`grid grid-cols-[1fr_1fr_0.8fr_0.8fr] gap-3 border-b border-stone-100 px-4 py-4 text-sm transition hover:bg-rose-50 ${
                     selected?.id === submission.id ? "bg-rose-50" : ""
                   }`}
                   href={`/admin?${new URLSearchParams({
@@ -75,19 +67,45 @@ export default async function AdminPage({
                   <span className="font-medium">{submission.name}</span>
                   <span>{primaryConcern(submission.concerns)}</span>
                   <span>{submission.wants_session ? "Yes" : "Not yet"}</span>
-                  <span className="hidden sm:block">{new Date(submission.created_at).toLocaleDateString("en-SG")}</span>
+                  <span>{new Date(submission.created_at).toLocaleDateString("en-SG")}</span>
+                </Link>
+              ))}
+            </div>
+
+            <div className="space-y-3 md:hidden">
+              {submissions.map((submission) => (
+                <Link
+                  className={`block rounded-lg bg-white p-4 shadow-sm ring-1 transition hover:bg-rose-50 ${
+                    selected?.id === submission.id ? "ring-rose-300" : "ring-stone-200"
+                  }`}
+                  href={`/admin?${new URLSearchParams({
+                    ...(params.wants === "yes" ? { wants: "yes" } : {}),
+                    selected: submission.id,
+                  })}`}
+                  key={submission.id}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-base font-semibold">{submission.name}</p>
+                      <p className="mt-1 text-sm text-stone-600">{primaryConcern(submission.concerns)}</p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800">
+                      {submission.wants_session ? "Session" : "Not yet"}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm text-stone-500">{new Date(submission.created_at).toLocaleDateString("en-SG")}</p>
                 </Link>
               ))}
             </div>
 
             {selected && (
               <aside className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-stone-200">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
                     <h2 className="text-xl font-semibold">{selected.name}</h2>
-                    <p className="mt-1 text-sm text-stone-600">{selected.age_range} | {selected.whatsapp}</p>
+                    <p className="mt-1 break-words text-sm text-stone-600">{selected.age_range} | {selected.whatsapp}</p>
                   </div>
-                  <span className="rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800">
+                  <span className="w-fit rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800">
                     {selected.summary_review_status}
                   </span>
                 </div>

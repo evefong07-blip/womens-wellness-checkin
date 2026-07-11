@@ -115,7 +115,7 @@ export function buildRuleBasedSummary(payload: Pick<CheckinPayload, "name" | "co
 }
 
 export function buildWhatsappUrl(payload: Pick<CheckinPayload, "name" | "concerns">, evelynNumber?: string) {
-  const number = (evelynNumber || process.env.NEXT_PUBLIC_EVELYN_WHATSAPP || process.env.EVELYN_WHATSAPP_NUMBER || "6591112222").replace(/[^\d]/g, "");
+  const number = (evelynNumber || process.env.NEXT_PUBLIC_EVELYN_WHATSAPP || process.env.EVELYN_WHATSAPP_NUMBER || "6580208895").replace(/[^\d]/g, "");
   const text = `Hi Evelyn, I just completed the wellness check-in. My name is ${payload.name.trim()} and my main concern is ${primaryConcern(payload.concerns)}.`;
   return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }
