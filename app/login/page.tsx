@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { evelynAdminEmail } from "@/lib/admin-auth";
 
 export default async function LoginPage({
   searchParams,
@@ -15,20 +16,26 @@ export default async function LoginPage({
     const password = String(formData.get("password") || "");
     const next = String(formData.get("next") || "/admin");
     const supabase = await createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       redirect(`/login?error=${encodeURIComponent("Email or password was not accepted")}&next=${encodeURIComponent(next)}`);
+    }
+
+    if (data.user?.email?.toLowerCase() !== evelynAdminEmail()) {
+      await supabase.auth.signOut();
+      redirect(`/login?error=${encodeURIComponent("This admin area is only for Evelyn")}&next=${encodeURIComponent(next)}`);
     }
 
     redirect(next);
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center overflow-x-hidden bg-rose-50 px-4 py-6 text-stone-900">
-      <form action={login} className="w-full max-w-sm rounded-lg bg-white p-5 shadow-sm ring-1 ring-rose-100 sm:p-6">
-        <p className="text-sm font-medium text-rose-700">Evelyn admin</p>
-        <h1 className="mt-2 text-2xl font-semibold">Sign in</h1>
+    <main className="wellness-bg flex min-h-screen items-center justify-center overflow-x-hidden px-4 py-6 text-stone-900">
+      <form action={login} className="wellness-card w-full max-w-sm p-5 sm:p-6">
+        <p className="eyebrow">Evelyn admin</p>
+        <h1 className="mt-2 text-2xl font-semibold">Sign in to review check-ins</h1>
+        <p className="mt-2 text-sm leading-6 text-stone-600">This dashboard is private and only available to Evelyn.</p>
         <input name="next" type="hidden" value={params.next || "/admin"} />
         {params.error && <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">{params.error}</p>}
         <label className="mt-5 block">

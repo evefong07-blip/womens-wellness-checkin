@@ -10,7 +10,8 @@
 
 body {
   margin: 0;
-  background: #fff7f7;
+  background: #fff8f8;
+  color: #1c1917;
 }
 
 button,
@@ -20,12 +21,39 @@ textarea {
   font: inherit;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.wellness-bg {
+  background:
+    linear-gradient(180deg, rgba(255, 248, 248, 0.96), rgba(255, 241, 242, 0.94)),
+    radial-gradient(circle at top left, rgba(253, 164, 175, 0.22), transparent 34%);
+}
+
+.wellness-card {
+  border-radius: 8px;
+  border: 1px solid #ffe4e6;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 55px rgba(136, 19, 55, 0.08);
+}
+
+.eyebrow {
+  color: #be123c;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .field {
   width: 100%;
   border-radius: 8px;
   border: 1px solid #d6d3d1;
   background: #ffffff;
-  padding: 0.75rem 0.875rem;
+  min-height: 3rem;
+  padding: 0.8rem 0.95rem;
   color: #1c1917;
   outline: none;
   transition:
@@ -45,14 +73,23 @@ textarea {
   border-radius: 8px;
   border: 1px solid #e7e5e4;
   background: #ffffff;
-  padding: 0.875rem;
+  min-height: 3.25rem;
+  padding: 0.95rem;
   color: #292524;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.choice:hover {
+  border-color: #fda4af;
+  background: #fff7f7;
 }
 
 .primary-button,
 .secondary-button {
   display: inline-flex;
-  min-height: 2.75rem;
+  min-height: 3rem;
   width: 100%;
   max-width: 100%;
   align-items: center;
@@ -90,4 +127,11 @@ textarea {
 .secondary-button:disabled {
   cursor: not-allowed;
   opacity: 0.65;
+}
+
+.admin-card {
+  border-radius: 8px;
+  border: 1px solid #e7e5e4;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(28, 25, 23, 0.04);
 }

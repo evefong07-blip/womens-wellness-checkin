@@ -102,20 +102,30 @@ export default function Home() {
 
   if (submission) {
     return (
-      <main className="min-h-screen overflow-x-hidden bg-rose-50 px-4 py-5 text-stone-900 sm:py-8">
-        <section className="mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-2xl flex-col justify-center">
-          <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-rose-100 sm:p-6">
-            <p className="text-sm font-medium text-rose-700">Your wellness check-in is saved</p>
-            <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Thank you, {submission.name}.</h1>
-            <p className="mt-4 text-base leading-7 text-stone-700">{submission.summary_text}</p>
+      <main className="wellness-bg min-h-screen overflow-x-hidden px-4 py-5 text-stone-900 sm:py-8">
+        <section className="mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-3xl flex-col justify-center">
+          <div className="wellness-card p-5 sm:p-8">
+            <p className="eyebrow">Saved successfully</p>
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-4xl">Thank you, {submission.name}.</h1>
+            <p className="mt-4 text-base leading-7 text-stone-700 sm:text-lg">{submission.summary_text}</p>
 
-            <div className="mt-6 rounded-lg bg-rose-50 p-4">
-              <p className="text-sm font-semibold text-stone-800">You shared</p>
-              <p className="mt-2 text-sm text-stone-700">
-                Main concern: <span className="font-medium">{primaryConcern(submission.concerns)}</span>
-              </p>
-              <p className="mt-1 text-sm text-stone-700">Concerns: {submission.concerns.join(", ")}</p>
-              <p className="mt-1 text-sm text-stone-700">Duration: {submission.duration}</p>
+            <div className="mt-6 rounded-lg border border-rose-100 bg-rose-50 p-4">
+              <p className="text-sm font-semibold text-stone-900">Your check-in snapshot</p>
+              <div className="mt-3 grid gap-3 text-sm text-stone-700 sm:grid-cols-3">
+                <div>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Main concern</span>
+                  <span className="mt-1 block font-semibold text-stone-900">{primaryConcern(submission.concerns)}</span>
+                </div>
+                <div>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Duration</span>
+                  <span className="mt-1 block font-semibold text-stone-900">{submission.duration}</span>
+                </div>
+                <div>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Concerns</span>
+                  <span className="mt-1 block font-semibold text-stone-900">{submission.concerns.length}</span>
+                </div>
+              </div>
+              <p className="mt-3 text-sm text-stone-700">{submission.concerns.join(", ")}</p>
             </div>
 
             <a
@@ -144,20 +154,34 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-rose-50 px-4 py-5 text-stone-900 sm:py-8">
-      <section className="mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-2xl flex-col justify-center">
-        <div className="mb-5">
-          <p className="text-sm font-medium text-rose-700">Women's Wellness Check-In</p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Tell Evelyn what has been happening.</h1>
-          <p className="mt-3 text-base leading-7 text-stone-700">
-            A gentle five-step check-in for women 40+ in Singapore. No login needed.
+    <main className="wellness-bg min-h-screen overflow-x-hidden px-4 py-5 text-stone-900 sm:py-8">
+      <section className="mx-auto grid min-h-[calc(100vh-2.5rem)] w-full max-w-6xl items-center gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-lg border border-rose-100 bg-white/70 p-5 shadow-sm sm:p-6">
+          <p className="eyebrow">Women's Wellness Check-In</p>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">Tell Evelyn what has been happening.</h1>
+          <p className="mt-4 max-w-xl text-base leading-7 text-stone-700">
+            A calm five-step check-in for women 40+ in Singapore. No login needed, no pressure, just a clearer starting point.
           </p>
+          <div className="mt-6 grid gap-3 text-sm text-stone-700 sm:grid-cols-3 lg:grid-cols-1">
+            <div className="rounded-lg border border-rose-100 bg-white p-4">
+              <p className="font-semibold text-stone-900">2 minutes</p>
+              <p className="mt-1">Share what feels most noticeable today.</p>
+            </div>
+            <div className="rounded-lg border border-rose-100 bg-white p-4">
+              <p className="font-semibold text-stone-900">Gentle summary</p>
+              <p className="mt-1">Get warm next-step guidance instantly.</p>
+            </div>
+            <div className="rounded-lg border border-rose-100 bg-white p-4">
+              <p className="font-semibold text-stone-900">WhatsApp Evelyn</p>
+              <p className="mt-1">Start the conversation only when ready.</p>
+            </div>
+          </div>
         </div>
 
-        <div className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-rose-100">
+        <div className="wellness-card p-5 sm:p-6">
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-rose-700">{progress}</p>
+              <p className="eyebrow">{progress}</p>
               <h2 className="mt-1 text-xl font-semibold">{stepTitle}</h2>
             </div>
             <div className="mt-3 h-2 w-24 shrink-0 rounded-full bg-rose-100 sm:w-28">

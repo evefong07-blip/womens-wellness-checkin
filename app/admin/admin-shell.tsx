@@ -36,8 +36,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900">
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 border-r border-stone-200 bg-white px-4 py-6 lg:block">
-        <p className="text-sm font-medium text-rose-700">Evelyn admin</p>
+        <p className="eyebrow">Evelyn admin</p>
         <h1 className="mt-1 text-xl font-semibold tracking-tight">Wellness Check-In</h1>
+        <p className="mt-3 text-sm leading-6 text-stone-600">A quiet place to review check-ins and plan the next caring message.</p>
         <div className="mt-8">{nav}</div>
       </aside>
 
@@ -50,11 +51,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <button
             aria-expanded={menuOpen}
             aria-label="Open navigation menu"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-stone-300 bg-white text-2xl leading-none"
+            className="inline-flex min-h-11 min-w-20 items-center justify-center rounded-md border border-stone-300 bg-white px-3 text-sm font-semibold"
             onClick={() => setMenuOpen((open) => !open)}
             type="button"
           >
-            {menuOpen ? "×" : "☰"}
+            {menuOpen ? "Close" : "Menu"}
           </button>
         </div>
         {menuOpen && <div className="mt-3 border-t border-stone-200 pt-3">{nav}</div>}

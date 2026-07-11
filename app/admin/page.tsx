@@ -18,14 +18,17 @@ export default async function AdminPage({
   const { data, error } = await query;
   const submissions = (data || []) as CheckinSubmission[];
   const selected = submissions.find((item) => item.id === params.selected) || submissions[0] || null;
+  const wantsSessionCount = submissions.filter((submission) => submission.wants_session).length;
+  const unreviewedCount = submissions.filter((submission) => submission.summary_review_status === "unreviewed").length;
 
   return (
     <main className="min-h-screen px-4 py-5 text-stone-900 sm:px-6 lg:px-8">
       <section className="mx-auto w-full max-w-6xl">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-medium text-rose-700">Evelyn admin</p>
+            <p className="eyebrow">Evelyn admin</p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Wellness check-ins</h1>
+            <p className="mt-2 text-sm text-stone-600">Review new submissions and choose who needs a gentle follow-up first.</p>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:flex">
             <Link className="secondary-button max-w-none" href="/admin">
@@ -37,6 +40,12 @@ export default async function AdminPage({
           </div>
         </div>
 
+        <div className="mb-5 grid gap-3 sm:grid-cols-3">
+          <StatCard label="Total submissions" value={String(submissions.length)} />
+          <StatCard label="Wants session" value={String(wantsSessionCount)} />
+          <StatCard label="Unreviewed" value={String(unreviewedCount)} />
+        </div>
+
         {error && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">Could not load submissions.</p>}
 
         {!submissions.length ? (
@@ -46,7 +55,7 @@ export default async function AdminPage({
           </div>
         ) : (
           <div className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="hidden overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-stone-200 md:block">
+            <div className="admin-card hidden overflow-hidden md:block">
               <div className="grid grid-cols-[1fr_1fr_0.8fr_0.8fr] gap-3 border-b border-stone-200 bg-stone-100 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-stone-600">
                 <span>Name</span>
                 <span>Top concern</span>
@@ -93,13 +102,17 @@ export default async function AdminPage({
                       {submission.wants_session ? "Session" : "Not yet"}
                     </span>
                   </div>
-                  <p className="mt-3 text-sm text-stone-500">{new Date(submission.created_at).toLocaleDateString("en-SG")}</p>
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-stone-600">
+                    <span className="rounded-full bg-stone-100 px-2.5 py-1">{new Date(submission.created_at).toLocaleDateString("en-SG")}</span>
+                    <span className="rounded-full bg-stone-100 px-2.5 py-1">{submission.concerns.length} concerns</span>
+                    <span className="rounded-full bg-stone-100 px-2.5 py-1">{submission.duration}</span>
+                  </div>
                 </Link>
               ))}
             </div>
 
             {selected && (
-              <aside className="rounded-lg bg-white p-5 shadow-sm ring-1 ring-stone-200">
+              <aside className="admin-card p-5">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <h2 className="text-xl font-semibold">{selected.name}</h2>
@@ -131,6 +144,15 @@ export default async function AdminPage({
         )}
       </section>
     </main>
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="admin-card p-4">
+      <p className="text-sm font-medium text-stone-600">{label}</p>
+      <p className="mt-2 text-2xl font-semibold text-stone-950">{value}</p>
+    </div>
   );
 }
 
