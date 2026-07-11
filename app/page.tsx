@@ -109,7 +109,7 @@ export default function Home() {
             <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-4xl">Thank you, {submission.name}.</h1>
             <p className="mt-4 text-base leading-7 text-stone-700 sm:text-lg">{submission.summary_text}</p>
 
-            <div className="mt-6 rounded-lg border border-rose-100 bg-rose-50 p-4">
+            <div className="mt-6 rounded-lg border border-stone-200 bg-stone-50 p-4">
               <p className="text-sm font-semibold text-stone-900">Your check-in snapshot</p>
               <div className="mt-3 grid gap-3 text-sm text-stone-700 sm:grid-cols-3">
                 <div>
@@ -129,13 +129,16 @@ export default function Home() {
             </div>
 
             <a
-              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-md bg-rose-700 px-5 py-3 text-center text-base font-semibold text-white transition hover:bg-rose-800"
+              className="whatsapp-button mt-6"
               href={buildWhatsappUrl(submission)}
               rel="noreferrer"
               target="_blank"
             >
-              Message Evelyn on WhatsApp
+              Continue to WhatsApp to contact Evelyn
             </a>
+            <p className="mt-2 text-center text-sm text-stone-600">
+              This opens WhatsApp with a message already written. You can review it before sending.
+            </p>
             <button
               className="mt-3 min-h-12 w-full rounded-md border border-stone-300 px-5 py-3 text-sm font-medium text-stone-700"
               onClick={() => {

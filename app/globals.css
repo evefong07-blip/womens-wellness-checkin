@@ -28,8 +28,8 @@ a {
 
 .wellness-bg {
   background:
-    linear-gradient(180deg, rgba(255, 248, 248, 0.96), rgba(255, 241, 242, 0.94)),
-    radial-gradient(circle at top left, rgba(253, 164, 175, 0.22), transparent 34%);
+    linear-gradient(180deg, rgba(255, 251, 247, 0.98), rgba(255, 247, 247, 0.96)),
+    radial-gradient(circle at top left, rgba(253, 164, 175, 0.16), transparent 34%);
 }
 
 .wellness-card {
@@ -134,4 +134,27 @@ a {
   border: 1px solid #e7e5e4;
   background: #ffffff;
   box-shadow: 0 10px 30px rgba(28, 25, 23, 0.04);
+}
+
+.whatsapp-button {
+  display: inline-flex;
+  min-height: 3.2rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #047857;
+  background: #047857;
+  padding: 0.85rem 1rem;
+  color: #ffffff;
+  font-weight: 800;
+  text-align: center;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.whatsapp-button:hover {
+  border-color: #065f46;
+  background: #065f46;
 }
