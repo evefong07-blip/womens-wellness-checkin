@@ -101,6 +101,9 @@ export default function Home() {
   }
 
   if (submission) {
+    const topConcern = primaryConcern(submission.concerns);
+    const alsoShared = submission.concerns.filter((concern) => concern !== topConcern);
+
     return (
       <main className="wellness-bg min-h-screen overflow-x-hidden px-4 py-5 text-stone-900 sm:py-8">
         <section className="mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-3xl flex-col justify-center">
@@ -113,18 +116,23 @@ export default function Home() {
               <p className="text-sm font-semibold text-stone-900">Your check-in snapshot</p>
               <div className="mt-3 grid gap-3 text-sm text-stone-700 sm:grid-cols-3">
                 <div>
-                  <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Main concern</span>
-                  <span className="mt-1 block font-semibold text-stone-900">{primaryConcern(submission.concerns)}</span>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Top concern</span>
+                  <span className="mt-1 block font-semibold text-stone-900">{topConcern}</span>
                 </div>
                 <div>
                   <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Duration</span>
                   <span className="mt-1 block font-semibold text-stone-900">{submission.duration}</span>
                 </div>
                 <div>
-                  <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Concerns</span>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Total concerns</span>
                   <span className="mt-1 block font-semibold text-stone-900">{submission.concerns.length}</span>
                 </div>
               </div>
+              {alsoShared.length > 0 && (
+                <p className="mt-4 text-sm leading-6 text-stone-700">
+                  <span className="font-semibold text-stone-900">Also shared:</span> {alsoShared.join(", ")}
+                </p>
+              )}
             </div>
 
             <a
