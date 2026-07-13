@@ -104,6 +104,10 @@ export function buildRuleBasedSummary(payload: Pick<CheckinPayload, "name" | "co
   const firstName = payload.name.trim().split(/\s+/)[0] || payload.name.trim();
   const concern = primaryConcern(payload.concerns);
   const baseCopy = concernCopy[concern] || concernCopy.Other;
+  const concernIntro =
+    payload.concerns.length > 1
+      ? `you shared ${payload.concerns.length} concerns, including ${concern.toLowerCase()}`
+      : `you shared ${concern.toLowerCase()}`;
   const tried = payload.already_tried?.trim()
     ? `You have already tried ${payload.already_tried.trim()}, so the next step can be more targeted.`
     : "You do not need to have tried everything before asking for support.";
@@ -111,11 +115,15 @@ export function buildRuleBasedSummary(payload: Pick<CheckinPayload, "name" | "co
     ? "A free Body Clarity Session is a gentle next step to make sense of these signals."
     : "You can keep this summary and reach out when the timing feels right.";
 
-  return `${firstName}, your top concern is ${concern.toLowerCase()}, and you have been noticing this for ${payload.duration.toLowerCase()}. ${baseCopy} ${tried} ${session}`;
+  return `${firstName}, ${concernIntro} and you have been noticing this for ${payload.duration.toLowerCase()}. ${baseCopy} ${tried} ${session}`;
 }
 
 export function buildWhatsappUrl(payload: Pick<CheckinPayload, "name" | "concerns">, evelynNumber?: string) {
   const number = (evelynNumber || process.env.NEXT_PUBLIC_EVELYN_WHATSAPP || process.env.EVELYN_WHATSAPP_NUMBER || "6580208895").replace(/[^\d]/g, "");
-  const text = `Hi Evelyn, I just completed the wellness check-in. My name is ${payload.name.trim()} and my main concern is ${primaryConcern(payload.concerns)}.`;
+  const concernText =
+    payload.concerns.length > 1
+      ? `I selected ${payload.concerns.length} concerns, including ${primaryConcern(payload.concerns)}`
+      : `my concern is ${primaryConcern(payload.concerns)}`;
+  const text = `Hi Evelyn, I just completed the wellness check-in. My name is ${payload.name.trim()} and ${concernText}.`;
   return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }
